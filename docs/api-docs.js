@@ -58,8 +58,10 @@ const options = {
   ],
 };
 
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+
 const specs = swaggerJsdoc(options);
 router.use('/', swaggerUi.serve);
-router.get('/', swaggerUi.setup(specs, options));
+router.get('/', swaggerUi.setup(specs, { customCssUrl: CSS_URL }));
 
 module.exports = router;
