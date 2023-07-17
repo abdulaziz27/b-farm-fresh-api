@@ -13,8 +13,8 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Production server',
+        url: 'b-farm-fresh-api.vercel.app',
+        description: 'Deployment server',
       },
       {
         url: 'http://localhost:3000',
