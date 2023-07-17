@@ -2,6 +2,65 @@ const {Category} = require('../models/category');
 const express = require('express');
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Categories
+ *   description: API endpoints for managing categories.
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Category:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: The auto-generated id of the category.
+ *         name:
+ *           type: string
+ *           description: The name of the category.
+ *         image:
+ *           type: string
+ *           description: The image URL of the category.
+ */
+
+/**
+ * @swagger
+ * /api/categories:
+ *   get:
+ *     tags: [Categories]
+ *     summary: Get a list of all categories.
+ *     responses:
+ *       '200':
+ *         description: Successful operation. Returns a list of categories.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Category'
+ *
+ *   post:
+ *     tags: [Categories]
+ *     summary: Create a new category.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Category'
+ *     responses:
+ *       '200':
+ *         description: Successful operation. Returns the newly created category.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Category'
+ */
+
 router.get(`/`, async (req, res) =>{
     const categoryList = await Category.find();
 
@@ -33,6 +92,59 @@ router.post('/', async (req,res)=>{
 
     res.send(category);
 })
+
+/**
+ * @swagger
+ * /api/categories/{id}:
+ *   put:
+ *     tags: [Categories]
+ *     summary: Update a category by ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the category to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Category'
+ *     responses:
+ *       '200':
+ *         description: Successful operation. Returns the updated category.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Category'
+ *
+ *   delete:
+ *     tags: [Categories]
+ *     summary: Delete a category by ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the category to delete.
+ *     responses:
+ *       '200':
+ *         description: Successful operation. Returns a success message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   description: Indicates if the operation was successful or not.
+ *                 message:
+ *                   type: string
+ *                   description: A message describing the result of the operation.
+ */
 
 router.put('/:id',async (req, res)=> {
     const category = await Category.findByIdAndUpdate(

@@ -15,21 +15,29 @@ function authJwt() {
       /\/api\/products(.*)/.test(path) ||
       /\/api\/categories(.*)/.test(path) ||
       /\/api\/users\/verify-email(.*)/.test(path) ||
+      /^\/api\/cart\/[a-fA-F0-9]{24}$/.test(path) ||
       `${api}/users/send-verification-email` === path ||
       `${api}/users/login` === path ||
-      `${api}/users/register` === path
+      `${api}/users/register` === path ||
+      `${api}/cart` === path ||
+      `${api}/orders` === path ||
+      `${api}/api-docs`
     );
   });
 }
 
 async function isRevoked(req, payload) {
-  // console.log(payload);
-  if (payload.isAdmin === false) {
-    console.log('Not Admin');
-    return true;
+  if (payload.isAdmin === true) {
+    return false; // izin untuk admin
   }
-  console.log('Admin');
-  return false;
+
+  // Cek user == pemilik keranjang
+  if (req.params.id && payload.userId !== req.params.id) {
+    console.log('Unauthorized access');
+    return true; // tidak diizinkan
+  }
+
+  return false; // izin user bukan admin
 }
 
 module.exports = authJwt;
