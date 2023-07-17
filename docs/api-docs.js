@@ -21,6 +21,20 @@ const options = {
         description: 'Development server',
       }
     ],
+    components: {
+      securitySchemes:
+      {
+          JWT: 
+        {
+          name: 'User Authorization',
+          description: 'Value: Bearer {token}',
+          type: 'apiKey',
+          scheme: 'bearer',
+          in: 'header',
+          bearerFormat: 'JWT'
+        }
+      }
+    },
     externalDocs: {
       description: 'Find more info here',
       url: 'https://example.com',
@@ -46,6 +60,6 @@ const options = {
 
 const specs = swaggerJsdoc(options);
 router.use('/', swaggerUi.serve);
-router.get('/', swaggerUi.setup(specs));
+router.get('/', swaggerUi.setup(specs, options));
 
 module.exports = router;
